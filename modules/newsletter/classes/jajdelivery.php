@@ -5,15 +5,16 @@ define( 'JAJ_NEWSLETTER_DELIVERY_STATUS_SENT',      1 );
 define( 'JAJ_NEWSLETTER_DELIVERY_STATUS_FAILED',    2 );
 define( 'JAJ_NEWSLETTER_DELIVERY_STATUS_CANCELLED', 3 );
 define( 'JAJ_NEWSLETTER_DELIVERY_STATUS_INVALID',   4 );
-    
+
 class JAJDelivery extends eZPersistentObject
 {
     function JAJDelivery( $row = array() )
     {
         $this->eZPersistentObject( $row );
     }
-    
-    static function definition() 
+
+    # Static not supported on PHP4    
+    function definition() 
     {
         return array(
             "fields" => array( 
@@ -66,7 +67,7 @@ class JAJDelivery extends eZPersistentObject
         Fetch delivery que item
         \return integer count
     */    
-    static function fetchDelivery( $newsletterIssueObjectID, $subscriptionUserObjectID ) {
+    function fetchDelivery( $newsletterIssueObjectID, $subscriptionUserObjectID ) {
         $result = eZPersistentObject::fetchObject(
             JAJDelivery::definition(), 
             null,
@@ -86,7 +87,7 @@ class JAJDelivery extends eZPersistentObject
         Fetch usercount for newsletter issue, optional by status
         \return integer count
     */
-    static function fetchDeliveryCount( $newsletterIssueObjectID, $status = null )
+    function fetchDeliveryCount( $newsletterIssueObjectID, $status = null )
     {
         $conds = array('newsletter_issue_id' => $newsletterIssueObjectID);
         
@@ -104,7 +105,7 @@ class JAJDelivery extends eZPersistentObject
         Checks if the delivery que for newsletter issue is empty
         \return boolean
     */    
-    static function emptyDeliveryQue( $newsletterIssueObjectID )
+    function emptyDeliveryQue( $newsletterIssueObjectID )
     {
         $result = JAJDelivery::fetchDeliveryCount( 
             $newsletterIssueObjectID, 

@@ -1,7 +1,9 @@
 <?php
     require_once('extension/jajnewsletter/modules/newsletter/classes/jajdelivery.php');
     require_once('extension/jajnewsletter/modules/newsletter/classes/jajnewsletterissue.php');
-      
+    require_once( 'lib/ezutils/classes/ezmail.php' );
+    require_once( 'lib/ezutils/classes/ezmailtransport.php' );
+
 	class JAJNewsletterOperations {
 	    function prepareNewsletterIssue($newsletterIssueObject) {
 	        $newsletterIni = eZINI::instance('jajnewsletter.ini');
@@ -9,12 +11,11 @@
 	        $premailer = $newsletterIni->variable( 'ServerSettings', 'Premailer' );
 	        $analyticsTracking = $newsletterIni->variable( 'NewsletterSettings', 'AnalyticsTracking' );
 	        
-	        
 	        $dataMap =& $newsletterIssueObject->dataMap();
-	        //$subject = $dataMap['subject']->content();
-	        //var_dump($newsletterIssueObject->mainNode());
-	        $url = $baseURI . "/" . $newsletterIssueObject->mainNode()->url();
-            $cmd = $premailer . " " . escapeshellarg($url);
+
+                $mainNode = $newsletterIssueObject->mainNode(); 
+	        $url = $baseURI . "/" . $mainNode->url();
+                $cmd = $premailer . " " . escapeshellarg($url);
             
             if( $analyticsTracking ) {
                 $campaign = urlencode( $dataMap['name']->content() );
@@ -25,11 +26,11 @@
             
             exec( $cmd, $output, $return_var );
             
-            if($return_var != 0)
-                return false;
-            
+            //if($return_var != 0)
+            //    return false;
+             
             $messageBody = join($output);
-                
+            $messageBody = "body";    
             // TODO: Check for secret sign that everything was generated ok
             // TODO: Compress html (remove repeated whitespace)
             return $messageBody;

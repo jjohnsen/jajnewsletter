@@ -1,7 +1,8 @@
 <?php
   require("errors.php");
   require_once( 'kernel/common/template.php' );
-  
+  require_once( 'extension/jajnewsletter/modules/newsletter/classes/jajnewsletteroperations.php' );
+ 
   $newsletterIni = eZINI::instance('jajnewsletter.ini');
   $fromName = $newsletterIni->variable( 'NewsletterSettings', 'FromName' );
   $fromEmail = $newsletterIni->variable( 'NewsletterSettings', 'FromEmail' );
@@ -10,13 +11,14 @@
   $nodeID = $Params['NodeID'];
   $node =& eZContentObjectTreeNode::fetch( $NodeID );
 
-  if ( !$node )
-      return $Module->handleError( eZError::KERNEL_NOT_AVAILABLE, 'kernel' );
-      
+  if ( !$node ) {
+      return $Module->handleError( KERNEL_NOT_AVAILABLE, 'kernel' );
+  }
+
   $object =& $node->object();
   if ( !$object->canRead() )
       return $Module->handleError( 
-        eZError::KERNEL_ACCESS_DENIED, 'kernel', array( 'AccessList' => $object->accessList( 'read' ) ) 
+        KERNEL_ACCESS_DENIED, 'kernel', array( 'AccessList' => $object->accessList( 'read' ) ) 
       );
   
   $dataMap =& $object->dataMap();
