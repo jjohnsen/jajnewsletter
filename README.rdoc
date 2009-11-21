@@ -1,6 +1,13 @@
-= jajNewsletter
+== jajNewsletter
 
 Newsletter extension for eZ Publish
+
+=== Features
+
+=== Limitations
+
+ * Don't expect anything to work right now
+ * Lacks multilingual support
 
 === System Requirements
 
@@ -11,15 +18,56 @@ Newsletter extension for eZ Publish
 
 === Extension
 
+Enabled the extension through the eZ Publish administrator interface.
+
 === Premailer
 
 Take a look at http://code.google.com/p/premailer/wiki/InstallingPremailer for the requirements.
 
    sudo gem install jajnewsletter/extras/premailer-1.5.1.gem
 
+Test that you can run the premailer script in extension/jajnewsletter/bin/premailer, you might have to change where ruby resides in the first line.
+
 === Database
 
+   mysql [database] -u [username] -p < jajnewsletter/sql/mysql/schema.sql
+
 === Content Class Package
+
+Import the package(s) found in jajnewsletter/packages/
+
+=== Content Structure
+
+Create the following folder structure in your content tree:
+
+   /Newsletter
+   /Newsletter/Issues
+   /Newsletter/Lists
+   /Newsletter/Users
+
+=== Section
+
+Create a new section called Newsletter and assign the Newsletter folder to it.
+
+=== INI Files
+
+Edit the extension/jajnewsletter/settings/jajnewsletter.ini.append.php INI file.
+
+NewsletterIssuesNode, SubscriptionListsNode and SubscriptionUsersNode should be set to the NodeIDs of the folders you just created.
+
+BaseURI should be set to your primary public siteaccess url.
+
+For example: http://www.yoursite.com or http://www.yoursite.com/index.php/eng
+
+=== Permissions
+
+The Anonymous role should be able to read Newsletter issues in the Newsletter section.
+
+The newsletter administrator should have access to the administration function in the newsletter module.
+
+=== Wrapping up
+
+Clean the cache and you should have a new tab called Newsletter in the administrator interface.
 
 == License
 
@@ -35,5 +83,6 @@ See LICENSE file for more details.
 
 === Premailer gem
 
-Premailer is copyrighted free software by Alex Dunae (http://dunae.ca/).
+Premailer is copyrighted free software by Alex Dunae (http://dunae.ca).
+
 Check out the Premailer web application at http://code.dunae.ca/premailer.web
