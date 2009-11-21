@@ -1,0 +1,7 @@
+== TODO ==
+
+* static keyword not supported by php4, affected files
+	modules/newsletter/classes/jajdelivery.php
+* left admin menu not working on eZ 3.10
+* eZError:: not supported by php4, affected files
+	modules/newsletter/newsletter_preview.php
