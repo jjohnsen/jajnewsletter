@@ -1,0 +1,49 @@
+#! /usr/bin/env ruby
+
+require 'rubygems'
+require 'optparse'
+require 'ostruct'
+require 'premailer'
+
+def exit_with_error(opts, msg = '')
+  puts msg + "\n\n" unless msg.empty?
+  puts opts
+  exit 1
+end
+
+options = OpenStruct.new
+options.plaintext = false
+options.outfile = ''
+options.querystring = ''
+options.warnings = false
+
+
+opts = OptionParser.new do |opts|
+  opts.banner = "Usage: #{$0} source [options]\n"
+  
+  opts.on("-b", "--baseurl [STRING]", "Base URL; only applies to local files") do |bs|
+    options.baseurl = bs
+  end
+  
+  opts.on("-q", "--querystring [STRING]", "Query string to append to links") do |qs|
+    options.querystring = qs || ''
+    options.querystring.gsub!(/^\?/, '')
+  end
+  
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end
+
+opts.parse!(ARGV)
+
+src = ARGV[0]
+exit_with_error(opts, "You must specify a source") if src.nil?
+
+premailer = Premailer.new(src, 
+                          :warn_level => Premailer::Warnings::SAFE, 
+                          :link_query_string => options.querystring,
+                          :base_url => options.baseurl)
+
+puts premailer.to_inline_css

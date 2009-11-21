@@ -13,11 +13,27 @@ Newsletter extension for eZ Publish
 
 === Premailer
 
-Get and install latest premailer from http://code.google.com/p/premailer/wiki/InstallingPremailer
+Take a look at http://code.google.com/p/premailer/wiki/InstallingPremailer for the requirements.
 
-   wget http://code.dunae.ca/premailer.web/gems/premailer-1.5.0.gem
-   sudo gem install premailer-1.5.0.gem
+   sudo gem install jajnewsletter/extras/premailer-1.5.1.gem
 
 === Database
 
 === Content Class Package
+
+== License
+
+=== jajNewsletter
+
+Copyright © 2009 by Jan Åge Johnsen. All rights reserved.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+See LICENSE file for more details.
+
+=== Premailer gem
+
+Premailer is copyrighted free software by Alex Dunae (http://dunae.ca/).
+Check out the Premailer web application at http://code.dunae.ca/premailer.web
