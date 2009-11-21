@@ -12,20 +12,20 @@
 	        $analyticsTracking = $newsletterIni->variable( 'NewsletterSettings', 'AnalyticsTracking' );
 	        
 	        $dataMap =& $newsletterIssueObject->dataMap();
-
+                                
                 $mainNode = $newsletterIssueObject->mainNode(); 
 	        $url = $baseURI . "/" . $mainNode->url();
-                $cmd = $premailer . " " . escapeshellarg($url);
+                
+                $cmd  = extension_path("jajnewsletter") . "/" . $premailer;
+                $cmd .= " " . escapeshellarg($url); 
             
-            if( $analyticsTracking ) {
-                $campaign = urlencode( $dataMap['name']->content() );
-                $querystring = "utm_source=newsletter&utm_medium=email&utm_campaign=" . $campaign;
-                $cmd  = $premailer . " --querystring " . escapeshellarg($querystring);
-                $cmd .= " --baseurl=' ' " . escapeshellarg($url);
-            }
-            
+                if( $analyticsTracking ) {
+                    $campaign = urlencode( $dataMap['name']->content() );
+                    $querystring = "utm_source=newsletter&utm_medium=email&utm_campaign=" . $campaign;
+                    $cmd .= " --querystring " . escapeshellarg($querystring);
+                }
+
             exec( $cmd, $output, $return_var );
-            
             if($return_var != 0)
                 return false;
              

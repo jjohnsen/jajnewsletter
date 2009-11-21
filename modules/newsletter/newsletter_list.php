@@ -19,6 +19,7 @@
 	$tpl->setVariable( 'newsletter_issues_node', $newsletterIssuesNode );
 
     	$Result = array();
+        $Result['left_menu'] = "design:parts/jnewsletter/menu.tpl";
     	$Result['content'] = $tpl->fetch( 'design:newsletter/newsletter_list.tpl' );
     	$Result['path'] = array( array( 'url' => false,
                                     	'text' => ezi18n( 'newsletter', 'Newsletter' ) ) );
