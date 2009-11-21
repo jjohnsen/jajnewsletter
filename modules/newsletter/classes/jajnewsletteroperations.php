@@ -26,11 +26,11 @@
             
             exec( $cmd, $output, $return_var );
             
-            //if($return_var != 0)
-            //    return false;
+            if($return_var != 0)
+                return false;
              
             $messageBody = join($output);
-            $messageBody = "body";    
+            
             // TODO: Check for secret sign that everything was generated ok
             // TODO: Compress html (remove repeated whitespace)
             return $messageBody;
