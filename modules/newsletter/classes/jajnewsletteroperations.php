@@ -56,7 +56,7 @@
             $mail->FromName = $fromName;
             $mail->AddReplyTo($replyTo, $fromName);
             
-            $mail->Subject = "B" . $subject;
+            $mail->Subject = $subject;
             $mail->MsgHTML($htmlBody);
             $mail->AltBody = $plainBody;
             $mail->AddAddress($recipientEmail);

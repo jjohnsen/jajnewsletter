@@ -11,7 +11,7 @@
             <table id="main" width="580" border="0" cellspacing="0" cellpadding="0">
             <tr>
                 <td id="webversion" align="center">
-                  <p>Having trouble viewing this email? <a href="#">View it in your browser</a>.</p>
+                  <p>Having trouble viewing this email? <a href={$node.url_alias|ezurl}>View it in your browser</a>.</p>
                </td>
             </tr>
             <tr>
