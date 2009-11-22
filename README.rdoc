@@ -8,10 +8,11 @@ Newsletter extension for eZ Publish
 
 * Don't expect anything to work right now
 * Lacks multilingual support
+* Only support SMTP Server transport
 
 === System Requirements
 
-* eZ Publish 3.10 or 4.2
+* eZ Publish 3.10 (Support for 4.2 in the works)
 * premailer
 
 == Installation

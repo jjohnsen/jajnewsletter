@@ -1,12 +1,11 @@
 <?php
     require_once('extension/jajnewsletter/modules/newsletter/classes/jajdelivery.php');
     require_once('extension/jajnewsletter/modules/newsletter/classes/jajnewsletterissue.php');
-    require_once( 'lib/ezutils/classes/ezmail.php' );
-    require_once( 'lib/ezutils/classes/ezmailtransport.php' );
     require_once( 'kernel/classes/ezcontentobjecttreenode.php' );
-
-	class JAJNewsletterOperations {
-	    function prepareNewsletterIssue($newsletterIssueObject) {
+    require_once( 'extension/jajnewsletter/lib/php4/PHPMailer_v2.0.4/class.phpmailer.php' );
+	
+    class JAJNewsletterOperations {
+        function prepareNewsletterIssue($newsletterIssueObject) {
 	        $newsletterIni = eZINI::instance('jajnewsletter.ini');
 	        $baseURI = $newsletterIni->variable( 'ServerSettings', 'BaseURI' );
 	        $premailer = $newsletterIni->variable( 'ServerSettings', 'Premailer' );
@@ -30,28 +29,41 @@
             if($return_var != 0)
                 return false;
              
-            $messageBody = join($output);
+            $messageBody = join("\n", $output);
             
+            $cmd .= " --plaintext";
+
+            exec( $cmd, $outputPlain, $return_var );
+            if($return_var != 0)
+                return false;
+
+            $plainBody = join("\n", $outputPlain);
+  
             // TODO: Check for secret sign that everything was generated ok
             // TODO: Compress html (remove repeated whitespace)
-            return $messageBody;
-	    }
-	    
-	    function deliver( $subject, $messageBody, $fromName, $fromEmail, $replyTo, $recipientEmail) {
-	        $mail = new eZMail();
-            $mail->setSender( $fromEmail, $fromName );
-            $mail->setReceiver( $recipientEmail );
-            $mail->setReplyTo( $replyTo );
-
-            $mail->setSubject( $subject );
-            $mail->setBody( $messageBody );
-            $mail->setContentType( "text/html" );
+            return array('html' => $messageBody, 'plain' => $plainBody);
+	}
+	
+        function deliver( $subject, $htmlBody, $plainBody, $fromName, $fromEmail, $replyTo, $recipientEmail) {
+            $ini =& eZINI::instance();
+            //$messageBody = eregi_replace("[\]",'',$messageBody);
             
-            //$result = eZMailTransport::send( $mail );
-            //return $result;
-            return true;
-	    }
-	    
+            $mail = new PHPMailer(); 
+            $mail->IsSMTP();
+            $mail->Host = $ini->variable( 'MailSettings', 'TransportServer' );
+            
+            $mail->From = $fromEmail;
+            $mail->FromName = $fromName;
+            $mail->AddReplyTo($replyTo, $fromName);
+            
+            $mail->Subject = "B" . $subject;
+            $mail->MsgHTML($htmlBody);
+            $mail->AltBody = $plainBody;
+            $mail->AddAddress($recipientEmail);
+            
+            return $mail->Send();
+        }
+
 		function doDeliveries($quiet=false) {
 		    $cli = eZCLI::instance();
 		    $issueLimit = 5; // Number of issues the script will process each time
@@ -145,7 +157,8 @@
                        
                         
                         $deliveryResult = JAJNewsletterOperations::deliver( 
-                            $newsletterSubject, $newsletterBody, 
+                            $newsletterSubject, $newsletterBody['html'],
+                            $newsletterBody['plain'], 
                             $fromName, $fromEmail, $replyTo, $userEmail
                         );
                         

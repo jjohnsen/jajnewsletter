@@ -32,7 +32,8 @@
       return $Module->handleError( JAJ_ERROR_NEWSLETTER_CONVERT_FAIL, 'newsletter' );
   
   $deliveryResult = JAJNewsletterOperations::deliver( 
-      $newsletterSubject, $newsletterBody, 
+      $newsletterSubject, $newsletterBody['html'],
+      $newsletterBody['plain'], 
       $fromName, $fromEmail, $replyTo, $previewEmail
   );
   

@@ -25,6 +25,10 @@ opts = OptionParser.new do |opts|
     options.baseurl = bs
   end
   
+  opts.on("-p", "--plaintext", "Create plain-text version") do |bs|
+    options.plaintext = true
+  end
+  
   opts.on("-q", "--querystring [STRING]", "Query string to append to links") do |qs|
     options.querystring = qs || ''
     options.querystring.gsub!(/^\?/, '')
@@ -46,4 +50,8 @@ premailer = Premailer.new(src,
                           :link_query_string => options.querystring,
                           :base_url => options.baseurl)
 
-puts premailer.to_inline_css
+if options.plaintext
+    puts premailer.to_plain_text
+else
+    puts premailer.to_inline_css
+end
