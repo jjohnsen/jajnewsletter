@@ -7,7 +7,7 @@ MethodName=DeliverySqlParts
 FileName=classes/jajdeliveryfilter.php
 
 [eorfilter]
-ExtensionName=eorfiltering
+ExtensionName=jajnewsletter
 ClassName=EORExtendedFilter
 MethodName=CreateSqlParts
 FileName=classes/eorfilter.php

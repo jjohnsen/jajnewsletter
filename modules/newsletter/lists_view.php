@@ -32,6 +32,7 @@
   $tpl->setVariable( 'subscription_users_node', $subscriptionUsersNode );
   	
   $Result = array();
+  $Result['left_menu'] = "design:parts/jnewsletter/menu.tpl";
   $Result['content'] = $tpl->fetch( 'design:newsletter/lists_view.tpl' );
   $Result['path'] = array( array( 'url' => false,
                                   'text' => ezi18n( 'newsletter', 'Newsletter' ) ) );

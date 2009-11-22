@@ -6,9 +6,10 @@
     define( 'JAJ_USER_STATUS_REMOVED_BY_ADMIN', 4 );
     define( 'JAJ_USER_STATUS_INALID', 5 );
 
-  require_once("errors.php");
+  require_once( 'errors.php' );
   require_once( 'kernel/common/template.php' );
-  
+  require_once( 'extension/jajnewsletter/modules/newsletter/classes/jajdelivery.php' );
+
   $newsletterIni = eZINI::instance('jajnewsletter.ini');
   $subscriptionUsersNode = $newsletterIni->variable( 'ContentSettings', 'SubscriptionUsersNode' );
   
@@ -17,14 +18,14 @@
   $userNode =& eZContentObjectTreeNode::fetch( $subscriptionUsersNode );
   
   if ( !$node || !$userNode )
-      return $Module->handleError( eZError::KERNEL_NOT_AVAILABLE, 'kernel' );
+      return $Module->handleError( KERNEL_NOT_AVAILABLE, 'kernel' );
       
   $object =& $node->object();
   $userObject =& $userNode->object();
   
   if ( !$object->canRead() || !$userObject->canRead() )
       return $Module->handleError( 
-        eZError::KERNEL_ACCESS_DENIED, 'kernel', array( 'AccessList' => $object->accessList( 'read' ) ) 
+        KERNEL_ACCESS_DENIED, 'kernel', array( 'AccessList' => $object->accessList( 'read' ) ) 
       );
   
   $dataMap =& $object->dataMap();
@@ -57,14 +58,15 @@
      array_push($delivered, $row['subscription_user_id']);
 
   // Status for users we should send newsletter to
-  $valid_status = array(JAJ_USER_STATUS_CONFIRMED, JAJ_USER_STATUS_APPROVED);
+  $valid_status = array(JAJ_USER_STATUS_PENDING, JAJ_USER_STATUS_CONFIRMED, JAJ_USER_STATUS_APPROVED);
   $limit = 50;
   $offset = 0;
   
   // Loop through users, 50 at a time to avoid excessive memory usage
   $recipient_count = 0;
   while(true) {
-    $users =& eZContentObjectTreeNode::subTreeByNodeID( 
+    //$users =& eZContentObjectTreeNode::subTreeByNodeID( 
+    $users =& eZContentObjectTreeNode::subTree(
       array(
         'ClassFilterType' => 'include',
         'ClassFilterArray' => array( 'subscription_user' ),

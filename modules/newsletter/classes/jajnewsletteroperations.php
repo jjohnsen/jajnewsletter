@@ -3,6 +3,7 @@
     require_once('extension/jajnewsletter/modules/newsletter/classes/jajnewsletterissue.php');
     require_once( 'lib/ezutils/classes/ezmail.php' );
     require_once( 'lib/ezutils/classes/ezmailtransport.php' );
+    require_once( 'kernel/classes/ezcontentobjecttreenode.php' );
 
 	class JAJNewsletterOperations {
 	    function prepareNewsletterIssue($newsletterIssueObject) {
@@ -46,8 +47,9 @@
             $mail->setBody( $messageBody );
             $mail->setContentType( "text/html" );
             
-            $result = eZMailTransport::send( $mail );
-            return $result;
+            //$result = eZMailTransport::send( $mail );
+            //return $result;
+            return true;
 	    }
 	    
 		function doDeliveries($quiet=false) {
@@ -64,7 +66,9 @@
             $replyTo = $newsletterIni->variable( 'NewsletterSettings', 'ReplyTo' );
             
 			// Get list of newsletter issues with status In Progress
-			$newsletterIssues =& eZContentObjectTreeNode::subTreeByNodeID( 
+			//$newsletterIssues =& eZContentObjectTreeNode::subTreeByNodeID( 
+                        
+                $newsletterIssues =& eZContentObjectTreeNode::subTree(
               array(
                 'ClassFilterType' => 'include',
                 'ClassFilterArray' => array( 'newsletter_issue' ),
@@ -106,7 +110,8 @@
                 while(true) {    
                     // Get users in delivery que for current newsletteer
                     // TODO: Should only get items where jajdelivery.tstamp > 1 hour or something
-                    $userNodes =& eZContentObjectTreeNode::subTreeByNodeID( 
+                    //$userNodes =& eZContentObjectTreeNode::subTreeByNodeID(
+                    $userNodes =& eZContentObjectTreeNode::subTree(
                         array(
                             'ClassFilterType' => 'include',
                             'ClassFilterArray' => array( 'subscription_user' ),
@@ -119,6 +124,7 @@
                             ),
                             'Limit' => $userLimit,
                             'Offset' => $userOffset,
+                            'Limitation' => array(),
                             //'LoadDataMap' => false
                         ), $subscriptionUsersNodeID
                     );

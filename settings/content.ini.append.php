@@ -2,7 +2,7 @@
 
 [DataTypeSettings]
 ExtensionDirectories[]=jajnewsletter
-AvailableDataTypes[]=jajpreviewnewsletter
+#AvailableDataTypes[]=jajpreviewnewsletter
 
 [EditSettings]
 ExtensionDirectories[]=jajnewsletter

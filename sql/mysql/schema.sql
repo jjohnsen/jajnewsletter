@@ -12,4 +12,4 @@ CREATE TABLE jajdelivery (
     KEY jajdelivery_status (status)
 );
 
-ALTER TABLE ezsurvey TYPE = innodb;
+ALTER TABLE jajdelivery TYPE = innodb;

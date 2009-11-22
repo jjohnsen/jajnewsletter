@@ -6,6 +6,8 @@ define( 'JAJ_NEWSLETTER_DELIVERY_STATUS_FAILED',    2 );
 define( 'JAJ_NEWSLETTER_DELIVERY_STATUS_CANCELLED', 3 );
 define( 'JAJ_NEWSLETTER_DELIVERY_STATUS_INVALID',   4 );
 
+include_once( "kernel/classes/ezpersistentobject.php" );
+
 class JAJDelivery extends eZPersistentObject
 {
     function JAJDelivery( $row = array() )
@@ -95,9 +97,14 @@ class JAJDelivery extends eZPersistentObject
             $conds['status'] = $status; 
         elseif( is_array( $status ) )
             $conds['status'] = array( $status );
-       
-        $count = eZPersistentObject::count( JAJDelivery::definition(), $conds );
-        return array( 'result' => $count );
+        
+         
+        //$count = eZPersistentObject::count( JAJDelivery::definition(), $conds );
+        $def = JAJDelivery::definition();
+        $field = '*';
+        $customFields = array( array( 'operation' => 'COUNT( ' . $field . ' )', 'name' => 'row_count' ) );
+        $rows = eZPersistentObject::fetchObjectList( $def, array(), $conds, null, null, false, false, $customFields );
+        return array( 'result' => $rows[0]['row_count'] );
     }
 
     /*!
