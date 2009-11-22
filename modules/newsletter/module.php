@@ -11,6 +11,13 @@ $ViewList['view'] = array(
     'params' => array ( 'remote_id' ),
     'default_navigation_part' => 'jajnewsletternavigationpart' );
 
+$ViewList['newsletter_view'] = array(
+    'script' => 'newsletter_view.php',
+    'functions' => array( 'administration' ),
+    'params' => array ( 'NodeID' ),
+    'unordered_params' => array( 'offset' => 'Offset' ),
+    'default_navigation_part' => 'jajnewsletternavigationpart' );
+
 $ViewList['newsletter_list'] = array(
     'script' => 'newsletter_list.php',
     'functions' => array( 'administration' ),

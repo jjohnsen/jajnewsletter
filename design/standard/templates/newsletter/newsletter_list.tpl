@@ -43,7 +43,7 @@
 {foreach $nodes as $node}
 <tr>
 	<td>
-		<a href={$node.url|ezurl()}>{$node.name|wash}</a>
+		<a href={concat( 'newsletter/newsletter_view/', $node.node_id )|ezurl}>{$node.name|wash}</a>
 	</td>
 	<td>
 		{$node.data_map.subject.content|wash()}

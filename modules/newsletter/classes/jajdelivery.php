@@ -80,8 +80,7 @@ class JAJDelivery extends eZPersistentObject
             ,
             true
         );
-        
-        return $result;
+        return array( 'result' => $result ); 
     }
     
     /*!

@@ -162,7 +162,8 @@
                             $fromName, $fromEmail, $replyTo, $userEmail
                         );
                         
-                        $delivery = JAJDelivery::fetchDelivery( $issueObject->ID, $userObject->ID );
+                        $deliveryResult = JAJDelivery::fetchDelivery( $issueObject->ID, $userObject->ID );
+                        $delivery = $deliveryResult['result'];
                         $delivery->setAttribute( 'tstamp', time() );
                         
                         if( $deliveryResult ) {
