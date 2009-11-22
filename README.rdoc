@@ -86,6 +86,12 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 See LICENSE file for more details.
 
+=== PHPMailer 
+
+PHPMailer is copyrighted free software by Worx International Inc. (www.worxware.com).
+
+Check out PHPMailer at http://phpmailer.worxware.com
+
 === Premailer gem
 
 Premailer is copyrighted free software by Alex Dunae (http://dunae.ca).
