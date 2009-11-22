@@ -16,7 +16,7 @@ options.plaintext = false
 options.outfile = ''
 options.querystring = ''
 options.warnings = false
-options.baseurl = ''
+#options.baseurl = ''
 
 opts = OptionParser.new do |opts|
   opts.banner = "Usage: #{$0} source [options]\n"
