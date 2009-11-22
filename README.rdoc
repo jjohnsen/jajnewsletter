@@ -1,4 +1,4 @@
-== jajNewsletter
+= jajNewsletter
 
 Newsletter extension for eZ Publish
 
@@ -6,8 +6,8 @@ Newsletter extension for eZ Publish
 
 === Limitations
 
- * Don't expect anything to work right now
- * Lacks multilingual support
+* Don't expect anything to work right now
+* Lacks multilingual support
 
 === System Requirements
 
@@ -55,9 +55,14 @@ Edit the extension/jajnewsletter/settings/jajnewsletter.ini.append.php INI file.
 
 NewsletterIssuesNode, SubscriptionListsNode and SubscriptionUsersNode should be set to the NodeIDs of the folders you just created.
 
-BaseURI should be set to your primary public siteaccess url.
-
+BaseURI should be set to your primary public siteaccess url. 
 For example: http://www.yoursite.com or http://www.yoursite.com/index.php/eng
+
+=== Overrides
+
+Inside extension/jajnewsletter/settings/siteaccess you will find a folder that will be used for the default siteaccess.
+If your default siteaccess has a different name, the content of the override.ini.append.php file must be added to
+the override.ini of you default siteaccess.
 
 === Permissions
 
