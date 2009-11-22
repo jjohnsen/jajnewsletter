@@ -91,3 +91,9 @@ See LICENSE file for more details.
 Premailer is copyrighted free software by Alex Dunae (http://dunae.ca).
 
 Check out the Premailer web application at http://code.dunae.ca/premailer.web
+
+=== Enhanced object relation filter
+
+Enhanced object relation filter is copyrighted software by Bertrand Dunogier (bd@ez.no)
+
+Patch for or support by Grégory Becue
