@@ -55,7 +55,7 @@
 		  {attribute_view_gui attribute=$node.data_map.status}
 		  
 	</td>
-	<td class="right">
+	<td class="right nowrap">
 	    {* 
 	        0 = Draft
 	        1 = In progress 

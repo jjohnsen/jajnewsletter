@@ -70,7 +70,7 @@
         }
 
         $subscriptions = implode( "-", $addToSubscriptionLists );
-
+        
         $creator =& eZUser::currentUser();
         $creatorID =& $creator->attribute( 'contentobject_id' );
 
@@ -81,6 +81,12 @@
         );
 
         foreach( $data as $index => $row ) {
+            if( $index % 50 ) 
+               eZContentObject::clearCache();
+
+            $row[0] = trim($row[0]);
+            $row[1] = trim($row[1]);
+ 
             if( !in_array( $index, $rowSelection ) )
                 continue;
             if( strlen( $row[0] ) == 0 ) {
@@ -92,6 +98,68 @@
                 continue;
             }
             
+            $users =& eZContentObjectTreeNode::subTree(
+                array(
+                    'ClassFilterType' => 'include',
+                    'ClassFilterArray' => array( 'subscription_user' ),
+                    'AttributeFilter' => array(
+                        array( 'subscription_user/email', '=', $row[1] )
+                    )
+                ), $subscriptionUsersNode
+            );
+
+            if( count( $users ) > 1 ) {
+                $warnings[] = "Row " . ($index+1) . " skipped, found multiple subscribers with email: '" 
+                    . htmlspecialchars($row[1]) . "'";
+                continue;
+            }
+            
+            if( count( $users ) == 1 ) {
+                $user = $users[0];
+                $userObject = $user->object(); 
+                $userDataMap = $userObject->DataMap();
+                $userStatus = $userDataMap['status']->toString();
+                
+                if( !in_array( $userStatus, array( 'Approved', 'Confirmed', 'Pending' ) ) ) {
+                    $warnings[] = "Row " . ($index+1) . " skipped, subscriber exists with invalid status."
+                        . " Email: '" . htmlspecialchars($row[1]) . "'";
+                    continue; 
+                }
+                
+                if( $userDataMap['subscriptions']->toString() )
+                    $userSubscriptions = explode( "-", $userDataMap['subscriptions']->toString() );
+                else
+                    $userSubscriptions = array();
+
+                $userSubDiff = array_diff( $addToSubscriptionLists, $userSubscriptions );
+                
+                $modified = false;
+
+                if( count( $userSubDiff ) > 0 ) {
+                    $userNewSubscriptions = array_unique( array_merge( $addToSubscriptionLists, $userSubscriptions ) );
+                    $userNewSubscriptions = implode( "-", $userNewSubscriptions );
+                    $userDataMap['subscriptions']->fromString( $userNewSubscriptions );
+                    $userDataMap['subscriptions']->store();
+                    $modified = true;
+                } 
+                
+                if( $userStatus != 'Approved' ) {
+                    $userDataMap['status']->fromString( 'Approved' );
+                    $userDataMap['status']->store();
+                    $modified = true;
+                }
+                
+                if( $modified ) {
+                    $warnings[] = "Row " . ($index+1) . " subscriber found and updated."
+                        . " Email: '" . htmlspecialchars($row[1]) . "'";
+                    eZContentObjectTreeNode::clearViewCacheForSubtree( $user );
+                } else {
+                    $warnings[] = "Row " . ($index+1) . " skipped, subscriber exists."
+                        . " Email: '" . htmlspecialchars($row[1]) . "'";
+                }
+                continue; 
+            } 
+
             $param_creation['attributes'] = array(
                 'name' => $row[0],
                 'email' => $row[1],
@@ -104,41 +172,14 @@
             if( $object == false ) {
                 $warnings[] = "Row " . ($index+1) . " skipped, failed to create subscriber with email: '" 
                     . htmlspecialchars($row[1]) . "'";
+            } else {
+                $warnings[] = "Row " . ($index+1) . " added subscriber with"
+                        . " email: '" . htmlspecialchars($row[1]) . "'";
             }
-        }    
-        //if ( !eZMail::validate( $email ) )
-        /*
-        $creator =& eZUser::currentUser();
-        $creatorID =& $creator->attribute( 'contentobject_id' );
-
-        $attributes = array(
-            'name' => 'Testing123',
-            'email' => '123hikt.no',
-            'subscriptions' => '282-2'
-        );
-
-        $param_creation = array(
-            'parent_node_id' => $subscriptionUsersNode,
-            'class_identifier' => 'subscription_user',
-            'creator_id' => $creatorID,
-            'attributes' => $attributes
-        );
-        
-        $object = eZContentFunctions::createAndPublishObject($param_creation); 
-        var_dump($object);
-        
-        $object = eZContentObject::fetch( 303 );
-        $data_map = $object->DataMap();
-        $person_list = $data_map[ 'subscriptions' ];
-        */
-        //var_dump($person_list->fromString("282-4"));
-        /*$content = $person_list->content();
-        $content['relation_list'][] = eZObjectRelationListType::appendObject( 282, 1, $person_list);
-
-        var_dump( $content );
-        $person_list->setContent( $content );
-        $person_list->store();
-        */
+        }
+        if ( $http->hasSessionVariable( 'CSVData' ) )
+            $http->removeSessionVariable( 'CSVData' );
+        $data = array();
     } while ( false );
 
     $tpl =& templateInit();
