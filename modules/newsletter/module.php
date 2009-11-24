@@ -51,5 +51,13 @@ $ViewList['lists_view'] = array(
     'unordered_params' => array( 'offset' => 'Offset' ),
     'default_navigation_part' => 'jajnewsletternavigationpart' );
 
+$ViewList['users_import'] = array(
+    'script' => 'users_import.php',
+    'default_navigation_part' => 'eznewsletter',
+    'functions' => array( 'administration' ),
+    'default_navigation_part' => 'jajnewsletternavigationpart',
+    'params' => array()
+);
+
 $FunctionList['administration'] = array( );
 ?>

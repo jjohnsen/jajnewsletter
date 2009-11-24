@@ -3,19 +3,23 @@
   
 	$list_node=fetch( 'content', 'node', hash( 'node_id', $node_id ) )
 	
-	$nodes=fetch( 'content', 'list', hash(
-	  'parent_node_id', 	  $subscription_users_node,
-	  'class_filter_type',  'include',
-    'class_filter_array', array( 'subscription_user' ),
-    'sort_by',        	  array( 'published', false() ),
-    'extended_attribute_filter', hash(
-      'id', 'eorfilter',
-      'params', array(
-        array('subscription_user/subscriptions', $list_node.contentobject_id)
-      )
-    ),
-    'offset',		$view_parameters.offset,
-    'limit',		$view_parameters.limit
+        $nodes=fetch( 'content', 'list', hash(
+	    'parent_node_id', 	  $subscription_users_node,
+	    'class_filter_type',  'include',
+            'class_filter_array', array( 'subscription_user' ),
+            'extended_attribute_filter', hash(
+                'id', 'eorfilter',
+                'params', array(
+                    array('subscription_user/subscriptions', $list_node.contentobject_id)
+                )
+            ),
+            'sort_by',        array( 
+                'attribute',
+                true(),
+                'subscription_user/email' 
+            ),
+            'offset',		$view_parameters.offset,
+            'limit',		$view_parameters.limit
 	) )
 	
 	$node_count=fetch( 'content', 'list_count', hash(
@@ -30,7 +34,7 @@
     )
   ) )
 }
-<div class="survey">
+<div class="newsletter">
 
 <div class="context-block">
 
@@ -49,7 +53,6 @@
 
 <div class="controlbar">
 {* DESIGN: Control bar START *}<div class="box-bc"><div class="box-ml"><div class="box-mr"><div class="box-tc"><div class="box-bl"><div class="box-br">
-  
 {* DESIGN: Control bar END *}</div></div></div></div></div></div>
 </div>
 
@@ -113,13 +116,21 @@
 
 <div class="controlbar">
 {* DESIGN: Control bar START *}<div class="box-bc"><div class="box-ml"><div class="box-mr"><div class="box-tc"><div class="box-bl"><div class="box-br">
-  
-  <div class="block">
-    {include uri='design:newsletter/buttons/action.tpl' 
-      parent_node=$parent_node class="subscription_user" value="New subscription" 
-      redirect=concat('newsletter/lists_view/', $node_id)}
-    <div class="break"></div>
-  </div>
+
+    <table>
+    <tr>
+        <td>
+            {include uri='design:newsletter/buttons/action.tpl' 
+              parent_node=$parent_node class="subscription_user" value="New subscription" 
+              redirect=concat('newsletter/lists_view/', $node_id)}
+        </td>
+        <td>
+            {include uri='design:newsletter/buttons/action.tpl' action='newsletter/users_import'
+              parent_node=$list_node class="subscription_user" value="Import from CSV"
+              redirect=concat('newsletter/lists_view/', $node_id)}
+        </td>
+    </tr>
+    </table>
 
 {* DESIGN: Control bar END *}</div></div></div></div></div></div>
 

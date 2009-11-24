@@ -1,4 +1,4 @@
-<div class="survey">
+<div class="newsletter">
 
 <div class="context-block">
 
