@@ -59,5 +59,14 @@ $ViewList['users_import'] = array(
     'params' => array()
 );
 
+$ViewList['sign_up'] = array(
+    'script' => 'sign_up.php',
+    'default_navigation_part' => 'eznewsletter',
+    'functions' => array( 'sign_up' ),
+    'default_navigation_part' => 'jajnewsletternavigationpart',
+    'params' => array ( 'RemoteID' )
+);
+
 $FunctionList['administration'] = array( );
+$FunctionList['sign_up'] = array( );
 ?>

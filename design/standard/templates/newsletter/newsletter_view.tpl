@@ -54,7 +54,7 @@
 {* DESIGN: Header END *}</div></div></div></div></div></div>
 
 {* DESIGN: Content START *}<div class="box-ml"><div class="box-mr"><div class="box-content">
-    <table>
+    <table cellspacing="6">
     <tr>
         <td valign="top">  
             <div class="block">

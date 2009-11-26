@@ -45,10 +45,34 @@
 {* DESIGN: Mainline *}<div class="header-mainline"></div>
 {* DESIGN: Header END *}</div></div></div></div></div></div>
 
-{* DESIGN: Content START *}<div class="box-ml"><div class="box-mr"><div class="box-content">
-  <div class="block">
-    {attribute_view_gui attribute=$list_node.data_map.description}
-  </div>
+{* DESIGN: Content START *}<div class="box-ml"><div class="box-mr">
+<div class="context-information">
+<p class="modified">{'Last modified'|i18n( 'design/admin/node/view/full' )}: {$list_node.object.modified|l10n(shortdatetime)}, <a href={$node.object.current.creator.main_node.url_alias|ezurl}>{$list_node.object.current.creator.name|wash}</a></p>
+<p class="translation">{$list_node.object.current_language_object.locale_object.intl_language_name}&nbsp;<img src="{$list_node.object.current_language|flag_icon}" alt="{$language_code}" style="vertical-align: middle;" /></p>
+<div class="break"></div>
+</div>
+
+<div class="box-content">
+    <table cellspacing="6" width="100%">
+    <tr>
+        <th align="left">{'Name'|i18n('jajnewsletter')}</th>
+        <th align="left">{'Creator'|i18n('jajnewsletter')}</th>
+        <th align="left">{'Created'|i18n('jajnewsletter')}</th>
+    </tr>
+    <tr>
+        <td>{$list_node.name|wash()}</td>
+        <td></td>
+        <td>{$list_node.object.published|l10n( shortdatetime )}</td>
+    </table>
+    
+    <div class="block">
+        <label>{'Description'|i18n('jajnewsletter')}:</label>
+        {attribute_view_gui attribute=$list_node.data_map.description}
+    </div>
+    <div class="block">
+        <label>{'Registration URL'|i18n('jajnewsletter')}:</label>
+        {concat('newsletter/sign_up/', $list_node.remote_id)|ezurl(no)}
+    </div>
 {* DESIGN: Content END *}</div></div></div>
 
 <div class="controlbar">
