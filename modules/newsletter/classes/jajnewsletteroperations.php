@@ -60,9 +60,9 @@
             $mail->MsgHTML($htmlBody);
             $mail->AltBody = $plainBody;
             $mail->AddAddress($recipientEmail);
-            
+ 
             //return $mail->Send();
-            return true;
+            return false;
         }
 
     function doDeliveries($quiet=false) {
