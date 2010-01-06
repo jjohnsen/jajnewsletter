@@ -9,11 +9,16 @@
     <tr>
         <td align="center">
             <table id="main" width="580" border="0" cellspacing="0" cellpadding="0">
+            {if $view_parameters.e|not()}
             <tr>
                 <td id="webversion" align="center">
-                  <p>Having trouble viewing this email? <a href={$node.url_alias|ezurl}>View it in your browser</a>.</p>
+                    <p>
+                        Having trouble viewing this email? 
+                        <a href={concat($node.url_alias,'/(e)/1')|ezurl}>View it in your browser</a>.
+                    </p>
                </td>
             </tr>
+            {/if}
             <tr>
                 <td>
                     <table width="580" border="0" cellspacing="16" cellpadding="0" id="content">
@@ -74,6 +79,18 @@
             </table>
         </td>
     </tr>
+    {if $view_parameters.e|not()}
+    {*
+    <tr>
+        <td align="center" id="unsubscribe">
+            <p>
+                Ønsker du ikke å motta nyhetsbrev fra oss?
+                <a href={'/newsletter/manage_subscription/__remote_id/__object_id'|ezurl()}>Klikk her</a> for å melde deg av vårt nyhetsbrev.
+            </p>
+        </td>
+    </tr>
+    *}
+    {/if}
     </table>
 </body>
 </html>

@@ -80,9 +80,7 @@
                 'status' => $userStatus
             );
 
-            var_dump($userObject);
             $userObject = JAJSubscriptionUser::updateSubscriptionUser($userObject, $attributes);
-            var_dump($userObject);
 
             $success['created'] = true;
             continue; 

@@ -91,18 +91,21 @@ class JAJDelivery extends eZPersistentObject
     function fetchDeliveryCount( $newsletterIssueObjectID, $status = null )
     {
         $conds = array('newsletter_issue_id' => $newsletterIssueObjectID);
-        
+
         if( is_string( $status ) || is_int( $status ) ) 
-            $conds['status'] = $status; 
+            $conds['jajdelivery.status'] = $status; 
         elseif( is_array( $status ) )
-            $conds['status'] = array( $status );
-        
+            $conds['jajdelivery.status'] = array( $status );
          
-        //$count = eZPersistentObject::count( JAJDelivery::definition(), $conds );
         $def = JAJDelivery::definition();
-        $field = '*';
+        $field = 'jajdelivery.id';
         $customFields = array( array( 'operation' => 'COUNT( ' . $field . ' )', 'name' => 'row_count' ) );
-        $rows = eZPersistentObject::fetchObjectList( $def, array(), $conds, null, null, false, false, $customFields );
+        $custom_tables = array("ezcontentobject");
+        $custom_conds = ' AND jajdelivery.subscription_user_id = ezcontentobject.id';
+        $rows = eZPersistentObject::fetchObjectList( 
+            $def, array(), $conds, null, null, false, false, $customFields, $custom_tables, $custom_conds
+        );
+
         return array( 'result' => $rows[0]['row_count'] );
     }
 
@@ -117,7 +120,6 @@ class JAJDelivery extends eZPersistentObject
             $newsletterIssueObjectID, 
             array( JAJ_NEWSLETTER_DELIVERY_STATUS_PENDING ) 
         );
-        
         return ($result["result"] == 0);
     }
 }

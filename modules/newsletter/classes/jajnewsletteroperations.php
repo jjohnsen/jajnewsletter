@@ -61,8 +61,8 @@
             $mail->AltBody = $plainBody;
             $mail->AddAddress($recipientEmail);
  
-            //return $mail->Send();
-            return false;
+            return $mail->Send();
+            //return false;
         }
 
     function doDeliveries($quiet=false) {
@@ -153,18 +153,26 @@
                         
                     if(!$quiet)
                         $cli->output( '     Delivereing to: ' . $userEmail, false );
-                       
-                    $deliveryResult = JAJNewsletterOperations::deliver( 
-                        $newsletterSubject, $newsletterBody['html'],
-                        $newsletterBody['plain'], 
+
+                    $htmlNewsletter = $newsletterBody['html'];
+                    $plainNewsletter = $newsletterBody['plain'];
+                    
+                    $htmlNewsletter = str_replace( "__remote_id", $userObject->remoteID(), $htmlNewsletter );
+                    $htmlNewsletter = str_replace( "__object_id", $userObject->ID, $htmlNewsletter );
+                    $plainNewsletter = str_replace( "__remote_id", $userObject->remoteID(), $plainNewsletter );
+                    $plainNewsletter = str_replace( "__object_id", $userObject->ID, $plainNewsletter );
+                     
+                    $newsletterDeliveryResult = JAJNewsletterOperations::deliver( 
+                        $newsletterSubject, $htmlNewsletter,
+                        $plainNewsletter, 
                         $fromName, $fromEmail, $replyTo, $userEmail
                     );
-                        
+                                 
                     $deliveryResult = JAJDelivery::fetchDelivery( $issueObject->ID, $userObject->ID );
                     $delivery = $deliveryResult['result'];
                     $delivery->setAttribute( 'tstamp', time() );
                         
-                    if( $deliveryResult ) {
+                    if( $newsletterDeliveryResult ) {
                         if(!$quiet)
                             $cli->output( ' => OK');
                         $delivery->setAttribute( 'status', JAJ_NEWSLETTER_DELIVERY_STATUS_SENT ); 
