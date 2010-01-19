@@ -13,7 +13,7 @@
 	        
 	        $dataMap =& $newsletterIssueObject->dataMap();
                                 
-                $mainNode = $newsletterIssueObject->mainNode(); 
+          $mainNode = $newsletterIssueObject->mainNode(); 
 	        $url = $baseURI . "/" . $mainNode->url();
                 
                 $cmd  = extension_path("jajnewsletter") . "/" . $premailer;
@@ -24,7 +24,7 @@
                     $querystring = "utm_source=newsletter&utm_medium=email&utm_campaign=" . $campaign;
                     $cmd .= " --querystring " . escapeshellarg($querystring);
                 }
-
+            
             exec( $cmd, $output, $return_var );
             if($return_var != 0)
                 return false;
@@ -46,10 +46,19 @@
 	
         function deliver( $subject, $htmlBody, $plainBody, $fromName, $fromEmail, $replyTo, $recipientEmail) {
             $ini =& eZINI::instance();
-            //$messageBody = eregi_replace("[\]",'',$messageBody);
+            
+            $iniI18N =& eZINI::instance( "i18n.ini" );
+            $charSet = $iniI18N->variable( 'CharacterSettings', 'Charset' );
+            if( $charSet != "iso-8859-1") {
+              $subject = iconv( $charSet, 'ISO-8859-1//TRANSLIT//IGNORE', $subject);
+              $htmlBody = iconv( $charSet, 'ISO-8859-1//TRANSLIT//IGNORE', $htmlBody);
+              $plainBody = iconv( $charSet, 'ISO-8859-1//TRANSLIT//IGNORE', $plainBody);
+            }
             
             $mail = new PHPMailer(); 
             $mail->IsSMTP();
+            //$mail->CharSet = "UTF-8";
+            //$mail->Encoding = "base64";
             $mail->Host = $ini->variable( 'MailSettings', 'TransportServer' );
             
             $mail->From = $fromEmail;
@@ -57,12 +66,11 @@
             $mail->AddReplyTo($replyTo, $fromName);
             
             $mail->Subject = $subject;
-            $mail->MsgHTML($htmlBody);
+            $mail->MsgHTML( $htmlBody );
             $mail->AltBody = $plainBody;
             $mail->AddAddress($recipientEmail);
  
             return $mail->Send();
-            //return false;
         }
 
     function doDeliveries($quiet=false) {
