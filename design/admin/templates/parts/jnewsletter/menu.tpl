@@ -8,9 +8,10 @@
 <ul>
     <li><div><a href={'newsletter/newsletter_list'|ezurl()}>{'Newsletters'|i18n( 'jajnewsletter/menu' )}</a></div>
     <li><div><a href={'newsletter/lists_list'|ezurl()}>{'List management'|i18n( 'jajnewsletter/menu' )}</a></div></li>
-    <li><div><a href={'newsletter/users_list'|ezurl()}>{'Subscribers'|i18n( 'jajnewsletter/menu' )}</a></div></li>
+    {* <li><div><a href={'newsletter/users_list'|ezurl()}>{'Subscribers'|i18n( 'jajnewsletter/menu' )}</a></div></li> *}
 </ul>
 
+{*
 <div style="color: #aaa; text-align:right">
     <small>
         {cache-block expiry=86400}
@@ -21,4 +22,5 @@
         {/cache-block}
     </small>
 </div>
+*}
 {* DESIGN: Content END *}</div></div></div></div></div></div>

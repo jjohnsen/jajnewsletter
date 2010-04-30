@@ -2,3 +2,5 @@
 *~
 *.swp
 ._*
+design/standard/override/templates/full/newsletter_issue.tpl
+design/standard/stylesheets/newsletter.css

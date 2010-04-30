@@ -13,7 +13,7 @@
 	        
 	        $dataMap =& $newsletterIssueObject->dataMap();
                                 
-          $mainNode = $newsletterIssueObject->mainNode(); 
+          	$mainNode = $newsletterIssueObject->mainNode(); 
 	        $url = $baseURI . "/" . $mainNode->url();
                 
                 $cmd  = extension_path("jajnewsletter") . "/" . $premailer;
@@ -24,7 +24,7 @@
                     $querystring = "utm_source=newsletter&utm_medium=email&utm_campaign=" . $campaign;
                     $cmd .= " --querystring " . escapeshellarg($querystring);
                 }
-            
+            //echo $cmd;
             exec( $cmd, $output, $return_var );
             if($return_var != 0)
                 return false;
