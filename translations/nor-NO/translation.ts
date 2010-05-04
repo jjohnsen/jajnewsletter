@@ -1,6 +1,12 @@
 <!DOCTYPE TS><TS>
 <context>
     <name>extension/jajnewsletter/signup</name>
+    
+    <message>
+        <source>Newsletter sign up</source>
+        <translation>Påmelding til nyhetsbrev</translation>
+    </message>
+
     <message>
         <source>Name is missing</source>
         <translation>Navn mangler</translation>
@@ -20,7 +26,16 @@
         <source>Sorry, you do not have permission to sign up to this newsletter</source>
         <translation>Beklager, du har ikke rettigheter til å melde deg på dette nyhetsbrevet</translation>
     </message>        
-    
+
+    <message>
+        <source>Thanks for your subscription!</source>
+        <translation>Takk for din påmelding!</translation>
+    </message>  
+
+    <message>
+        <source>Back to the webpage</source>
+        <translation>Tilbake til nettstedet</translation>
+    </message>          
     
     <message>
         <source>Your name</source>
